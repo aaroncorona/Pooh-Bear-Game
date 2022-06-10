@@ -418,9 +418,9 @@ public class SnakePanel extends JPanel implements ActionListener {
     }
 
     public static void displayInitialPause(Graphics g) { // Display the current score
-        g.setColor(Color.blue);
-        g.setFont(new Font("Serif", Font.PLAIN, 50));
-        g.drawString("Press Enter to begin",600,300); // coordinates start in the top left
+        g.setColor(Color.GRAY);
+        g.setFont(new Font("Serif", Font.ITALIC, 50));
+        g.drawString("Press Enter to begin",330,200);
     }
 
     public static void displayScore(Graphics g) { // Display the current score
