@@ -21,6 +21,12 @@ This is a snake style game with added features and a Winnie the Pooh theme.
 3. **Win the Game**: Unlike traditional snake, you can win this game in 2 ways. You can either eat 64 honeys, or eat a honey while filling up all edges with Pooh's tail.
 4. **High scores**: Save and display high scores for "Honey Eaten" to see where you rank.
 5. **Pooh Bear graphics**: Watch Pooh Bear's head chase honey around. Each honey gives a randomly colored tail.
+<img width="500" alt="nitro" src="https://user-images.githubusercontent.com/31792170/173162801-33f41746-0314-46d1-a332-4d54cce41eda.png">
+<img width="500" alt="gameover" src="https://user-images.githubusercontent.com/31792170/173163046-817ceb01-c7ff-4465-9498-21090919c827.png">
+<img width="500" alt="scores" src="https://user-images.githubusercontent.com/31792170/173162995-3186db38-a1ac-4fae-8221-6f435e7d546e.png">
+
+
+
 
 ## ⚙️ Tech Stack
 * Java Swing
