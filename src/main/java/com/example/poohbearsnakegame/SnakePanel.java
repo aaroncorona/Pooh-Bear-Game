@@ -10,20 +10,16 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class SnakePanel extends JPanel implements ActionListener { 	//implements ActionListener is needed for addActionListener() because it can only create an object of itself
+public class SnakePanel extends JPanel implements ActionListener {
 
-    // Static variables (each object has the same value)
+    // Constants
     static final int UNIT_SIZE = 30;
-    static final int SCREEN_WIDTH = (UNIT_SIZE*50);
-    static final int SCREEN_HEIGHT = (UNIT_SIZE*30);;
-    static final int DELAY = 100; //milliseconds between each frame rendering (ie what the Timer counts down between creating a new Frame object)
-    static final int WINNING_SCORE = 64; // when im 64
-    static int finalScore = 0;
-    static final int bodyPartsAddedPerApple = 10;
-    static final int startingBodyParts = 10; //length of the snake (head + body), start as 3
-    static long startTime; // Make public
-    static Color[] randomColorArray; // Make public
-    static long[][] highScoreArray; // Make public
+    static final int SCREEN_WIDTH = (UNIT_SIZE*35);
+    static final int SCREEN_HEIGHT = (UNIT_SIZE*25);;
+    static final int DELAY = 100; // milliseconds between each frame rendering (ie what the Timer counts down between creating a new Frame object)
+    static final int WINNING_SCORE = 64;
+    static final int BODY_PARTS_PER_APPLE = 10;
+    static final int STARTING_BODY_PARTS = 10; // length of the snake (head + body), start as 3
 
     // Flags to trigger events
     static boolean nitro = false; // flag for if the snake is moving on nitro
@@ -33,10 +29,14 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
     static boolean stopHs = false; // To prevent the timer from continually printing the final score
     static boolean win = false;
 
-    // Dynamic variables (each object can have a different value)
-    static int snake_x_coordinate[] = new int[WINNING_SCORE * (startingBodyParts + 5)]; //2000 is an arbitrary max size of the snake in width (x coordinate length)
-    static int snake_y_coordinate[] = new int[WINNING_SCORE * (startingBodyParts + 5)]; //2000 is an arbitrary max size of the snake in height (y coordinate length)
-    static int totalBodyParts = startingBodyParts;
+    // Static tracking variables
+    static long startTime;
+    static Color[] randomColorArray;
+    static long[][] highScoreArray;
+    static int finalScore = 0;
+    static int snake_x_coordinate[] = new int[WINNING_SCORE * (STARTING_BODY_PARTS + 5)]; //2000 is an arbitrary max size of the snake in width (x coordinate length)
+    static int snake_y_coordinate[] = new int[WINNING_SCORE * (STARTING_BODY_PARTS + 5)]; //2000 is an arbitrary max size of the snake in height (y coordinate length)
+    static int totalBodyParts = STARTING_BODY_PARTS;
     static int applesEatenScore = 0; // start at 0, then increment everytime the snake head is on the same coordinate as the apple
     static int apple_x_coordinate;
     static int apple_y_coordinate;
@@ -49,7 +49,7 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
     // Menus
     // Pause Menu
     public static JPopupMenu pauseMenu = new JPopupMenu();
-    public static JLabel pauseMenuLabel = new JLabel("GAME PAUSED - Press Space to Resume");
+    public static JLabel pauseMenuLabel = new JLabel("* GAME PAUSED - Press Space to Resume");
     // Game Over Menu
     public static JPopupMenu gameOverMenu = new JPopupMenu();
     public static JLabel gameOverMenuLabel1 = new JLabel(" "); //buffer
@@ -64,7 +64,7 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
     public static JPopupMenu highScoreMenu = new JPopupMenu();
     public static JLabel highScoreMenuLabel = new JLabel(); //buffer
 
-    // Button objects
+    // Buttons
     JButton pauseButton = new JButton();
     JButton restartButton = new JButton();
     JButton quitButton = new JButton();
@@ -105,7 +105,7 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
 
         // Create Control Menu (always displayed)
         JPopupMenu controlMenu = new JPopupMenu();
-        controlMenu.setLocation(1100,60);
+        controlMenu.setLocation(1100,140);
         controlMenu.setBackground(Color.orange);
         controlMenu.setBorder(BorderFactory.createLineBorder(Color.white));
         controlMenu.setFocusable(false); // Prevent the menu from taking focus from the panel
@@ -183,80 +183,56 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
 
     @ Override
     // Runs automatically on Frame rendering to execute drawEverything()
-    public void paint (Graphics dope1) {
-        super.paint(dope1); // dope1 = graphics object automatically created
+    public void paint (Graphics g) {
+        super.paint(g);
 
         // Image Icons
         // Make the background pooh bear
-        ImageIcon poohBackgroundIcon = new ImageIcon(new ImageIcon("/Users/aaroncorona/eclipse-workspace/Pooh-Bear-Snake-Game/src/assets/images/PoohBackground.png").getImage().getScaledInstance(600, 400, Image.SCALE_DEFAULT));
-        poohBackgroundIcon.paintIcon(this, dope1, 500, 330);
+        ImageIcon poohBackgroundIcon = new ImageIcon(new ImageIcon("/Users/aaroncorona/eclipse-workspace/Pooh-Bear-Snake-Game/src/assets/images/PoohBackground.png").getImage().getScaledInstance(450, 300, Image.SCALE_DEFAULT));
+        poohBackgroundIcon.paintIcon(this, g, 310, 220);
 
         // Make the apple a honey pot
         ImageIcon honeyIcon = new ImageIcon(new ImageIcon("/Users/aaroncorona/eclipse-workspace/Pooh-Bear-Snake-Game/src/assets/images/Honey.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_DEFAULT));
-        honeyIcon.paintIcon(this, dope1, apple_x_coordinate, apple_y_coordinate);
-
-        drawEverything(dope1); // Put this after so they go on top of the images
+        honeyIcon.paintIcon(this, g, apple_x_coordinate, apple_y_coordinate);
+        drawEverything(g); // Put this after so they go on top of the images
 
         // Make the snake head a picture of pooh bear (head goes over the snake)
         ImageIcon poohHeadIcon = new ImageIcon(new ImageIcon("/Users/aaroncorona/eclipse-workspace/Pooh-Bear-Snake-Game/src/assets/images/PoohHead.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_DEFAULT));
-        poohHeadIcon.paintIcon(this, dope1, snake_x_coordinate[0], snake_y_coordinate[0]);
+        poohHeadIcon.paintIcon(this, g, snake_x_coordinate[0], snake_y_coordinate[0]);
 
         // Fill over first box that fills with the spawning snake color to a tree instead (this is the top layer)
         ImageIcon treeIcon = new ImageIcon(new ImageIcon("/Users/aaroncorona/eclipse-workspace/Pooh-Bear-Snake-Game/src/assets/images/Tree.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_DEFAULT));
-        treeIcon.paintIcon(this, dope1, 0, 0);
+        treeIcon.paintIcon(this, g, 0, 0);
     }
 
-    public static void drawEverything(Graphics dope2) {
-
-        // Draw lines that show the unit sizes (needs a Loop for the repeated drawing action)
-        for(int i=0; i<100; i++) { // generate 100 lines
-            // Create a copy of the Graphics instance
-            Graphics2D g2d = (Graphics2D) dope2.create();
-            // Set the stroke of the copy, not the original
-            Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                    0, new float[] {
-                    2 // lower number = higher dash frequency
-            }, 0);
-            g2d.setStroke(dashed);
-            g2d.setColor(Color.gray.darker());
-            g2d.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, SCREEN_HEIGHT); // draws a line from y0 to ymax, as wide as the graphic drawing for consistency
-            // ex: draw a line that goes from x0 and topdown y (x start and end are the same so it's straight), another line that goes from x30 and topdown y, another line that goes from x60 and topdown y,
-            g2d.drawLine(0, i*UNIT_SIZE, SCREEN_WIDTH, i*UNIT_SIZE);
-            g2d.dispose();
-			/*  Documentation on drawLine:
-			x1 – Takes the first point’s x coordinate.
-			y1 – Takes first point’s y coordinate.
-			x2 – Takes second point’s x coordinate.
-			y2 – Takes second point’s y coordinate
-			*/
-        }
+    public static void drawEverything(Graphics g) {
 
         // Draw the Snake initial body (yellow)
-        for(int i=1; i<=startingBodyParts; i++) { // for the next loops for the initial body, make the rectangles yellow
-            dope2.setColor(Color.yellow); // color the starting body yellow
-            dope2.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the apple size consistent with the snake
+        for(int i=1; i<=STARTING_BODY_PARTS; i++) { // for the next loops for the initial body, make the rectangles yellow
+            g.setColor(Color.yellow); // color the starting body yellow
+            g.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the apple size consistent with the snake
         }
 
         // Draw the snake tail (rest of the body). Each new block of 10 gets a random color
-        for(int i=startingBodyParts+1; i <= totalBodyParts; i++) { //loop for every 1 added?
-            dope2.setColor(randomColorArray[i]);
-            dope2.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the apple size consistent with the snake
+        for(int i=STARTING_BODY_PARTS+1; i <= totalBodyParts; i++) { //loop for every 1 added?
+            g.setColor(randomColorArray[i]);
+            g.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the apple size consistent with the snake
         }
 
         // Display Initial pause message
         if(initial_pause == true) {
-            displayInitialPause(dope2);
+            displayInitialPause(g);
         }
 
         // Display current score
-        displayScore(dope2);
+        displayScore(g);
 
         // Display stop watch
-        displayStopWatch(dope2);
+        displayStopWatch(g);
 
         // Display nitro boost message
         if(nitro == true) {
-            displayNitro(dope2);
+            displayNitro(g);
         }
     }
 
@@ -317,7 +293,7 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
         }
         direction = 'R'; // Always move right to avoid a collision
         oldDirection = 'R';
-        totalBodyParts = startingBodyParts;
+        totalBodyParts = STARTING_BODY_PARTS;
         applesEatenScore = 0;
     }
 
@@ -354,7 +330,7 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
             if(snake_x_coordinate[i] == apple_x_coordinate
                     && snake_y_coordinate[i] == apple_y_coordinate) {
                 applesEatenScore++;
-                totalBodyParts = totalBodyParts + bodyPartsAddedPerApple;
+                totalBodyParts = totalBodyParts + BODY_PARTS_PER_APPLE;
                 checkWin();
                 generateNewAppleCoordinates();
             }
@@ -375,7 +351,7 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
                     && (snake_y_coordinate[0] == snake_y_coordinate[i])) { // true if the snake head coordinates equal a snake body coordinate
                 running = false; // stop the game (triggers end game message)
                 running = false; // stop the game (triggers end game message)
-                System.out.println("BODY COLLISION - GAME OVER");
+                System.out.println("* GAME OVER (Body Collision)");
             }
         }
         // check for the head colliding with one of the 4 borders
@@ -384,7 +360,7 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
                 || (snake_y_coordinate[0] < 0)                // bottom border
                 || (snake_y_coordinate[0] >= SCREEN_HEIGHT)) { // top border
             running = false; // stop the game (triggers end game message)
-            System.out.println("WALL COLLISION - GAME OVER");
+            System.out.println("* GAME OVER (Wall Collision)");
         }
     }
 
@@ -468,8 +444,8 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
     public static void fillTailColorArray() {
         // Reset/create array
         randomColorArray = new Color[1000]; // Shell for an array that can hold enough colors for every snake tail addition
-        for(int i=startingBodyParts+1; i <= 999; i++) { //start at the value of the initial tail (11th position in the array after the head and inital 10 body)
-            Random rando = new Random((int) Math.floor(i/(startingBodyParts +0.01))); // create a random object using an int seed (i/10) that changes every 10 loops (w rouding) so that the Random object only updates to a new seed benchmark every tail addition / apple eaten (0.01 is for rounding so the random number seed changes at the 11th variable like 21, 31, etc)
+        for(int i=STARTING_BODY_PARTS+1; i <= 999; i++) { //start at the value of the initial tail (11th position in the array after the head and inital 10 body)
+            Random rando = new Random((int) Math.floor(i/(STARTING_BODY_PARTS +0.01))); // create a random object using an int seed (i/10) that changes every 10 loops (w rouding) so that the Random object only updates to a new seed benchmark every tail addition / apple eaten (0.01 is for rounding so the random number seed changes at the 11th variable like 21, 31, etc)
             randomColorArray[i] = new Color(rando.nextInt(255), rando.nextInt(255), rando.nextInt(255)); // every loop generates a color object into the array by taking the next random int in the random sequence. The random sequence of numbers is the same (e.g. 10, 20, 30), but updates every 10 loops, thus creating a different color every 10
         }
     }
@@ -550,17 +526,17 @@ public class SnakePanel extends JPanel implements ActionListener { 	//implements
             Timestamp ts3 = new Timestamp(highScoreArray[highScoreArray.length-3][1]);
 
             // Special message if the player reached a top 3 high score
-            System.out.println("Your final score is " + finalScore); // Array is sorted in ascending order
+            System.out.println("* Your final score is " + finalScore); // Array is sorted in ascending order
             if(finalScore > score3 && finalScore >= 20) {
-                System.out.println("Congrats! That's a new high score. That puts you at top 3 all time."); // Array is sorted in ascending order
+                System.out.println("* CONGRATS! That's a new high score. That puts you at top 3 all time."); // Array is sorted in ascending order
             } else {
-                System.out.println("Sorry, your score was not good enough for top 3 all time."); // Array is sorted in ascending order
+                System.out.println("* Sorry, your score was not good enough for top 3 all time."); // Array is sorted in ascending order
             }
 
             // Show top 3 high scores and the times they were achieved
-            System.out.println("First place: " + score1 + " on " + ts1);
-            System.out.println("Second place: " + score2 + " on " + ts2);
-            System.out.println("Third place: " + score3 + " on " + ts3);
+            System.out.println("1st place: " + score1 + " on " + ts1);
+            System.out.println("2nd place: " + score2 + " on " + ts2);
+            System.out.println("3rd place: " + score3 + " on " + ts3);
 
             // End this process
             stopHs = true; // Set to true, which is a workaround to make sure this only happens oncee
