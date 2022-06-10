@@ -49,7 +49,7 @@ public class SnakePanel extends JPanel implements ActionListener {
     // Menus
     // Pause Menu
     public static JPopupMenu pauseMenu = new JPopupMenu();
-    public static JLabel pauseMenuLabel = new JLabel("* GAME PAUSED - Press Space to Resume");
+    public static JLabel pauseMenuLabel = new JLabel("GAME PAUSED - Press Space to Resume");
     // Game Over Menu
     public static JPopupMenu gameOverMenu = new JPopupMenu();
     public static JLabel gameOverMenuLabel1 = new JLabel(" "); //buffer
@@ -262,8 +262,8 @@ public class SnakePanel extends JPanel implements ActionListener {
         running = false;
         // Create Pause Menu
         // JPopupMenu pauseMenu = new JPopupMenu();
-        pauseMenu.setLocation(600, 400);
-        pauseMenu.setPreferredSize(new Dimension(450, 40));
+        pauseMenu.setLocation(625, 400);
+        pauseMenu.setPreferredSize(new Dimension(450, 30));
         pauseMenu.setBackground(Color.green.darker());
         pauseMenu.setBorder(BorderFactory.createLineBorder(Color.white));
         pauseMenu.setFocusable(false); // Prevent the menu from taking focus from the panel
@@ -408,7 +408,8 @@ public class SnakePanel extends JPanel implements ActionListener {
                 && snakeXCoordinatesNoDupsBottomBorder.size() == xAxisUnitLength
                 && snakeYCoordinatesNoDupsLeftBorder.size() == yAxisUnitLength
                 && snakeYCoordinatesNoDupsRightBorder.size() == yAxisUnitLength
-                && applesEatenScore >= 40) {
+                && applesEatenScore >= 10
+        ) {
             System.out.println("You filled all the sides and ate an apple! You win!");
             applesEatenScore = WINNING_SCORE;
             finalScore = applesEatenScore; // Update final score
@@ -432,13 +433,13 @@ public class SnakePanel extends JPanel implements ActionListener {
     public static void displayStopWatch(Graphics g) { // Display the current score
         g.setColor(Color.orange.brighter());
         g.setFont(new Font("Serif", Font.PLAIN, 25));
-        g.drawString("Time: " + elapsedMins + " Mins and " + elapsedSecondsRemainder + " Seconds",30,112); // coordinates start in the top left
+        g.drawString("Time Elapsed: " + elapsedMins + " Mins and " + elapsedSecondsRemainder + " Seconds",30,112); // coordinates start in the top left
     }
 
     public static void displayNitro(Graphics g) { // Display the current score
         g.setColor(Color.yellow);
         g.setFont(new Font("Serif", Font.PLAIN, 50));
-        g.drawString("NITRO ON",710,300); // coordinates start in the top left
+        g.drawString("NITRO ON",400,300); // coordinates start in the top left
     }
 
     public static void fillTailColorArray() {
