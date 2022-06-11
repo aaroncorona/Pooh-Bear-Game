@@ -19,13 +19,13 @@ This is a snake style game with added features and a Winnie the Pooh theme.
 ## 🕹️ Game Features
 1. **Snake**: Traditional snake gameplay
 2. **Nitro**: Double click in 1 direction to get a nitro boost, which speeds up the dull parts of the game
-3. **Win the Game**: Unlike traditional snake, you can win this game in 2 ways. You can either eat 64 honeys, or eat a honey while filling up all edges with Pooh's tail.
+3. **Win the Game**: Unlike traditional snake, you can win this game by eating 33 honeys.
 4. **High scores**: Save and display high scores for "Honey Eaten" to see where you rank.
 5. **Pooh Bear graphics**: Watch Pooh Bear's head chase honey around. Each honey gives a randomly colored tail.
-<img width="500" alt="nitro" src="https://user-images.githubusercontent.com/31792170/173162801-33f41746-0314-46d1-a332-4d54cce41eda.png">
+<img width="500" alt="nitro" src="https://user-images.githubusercontent.com/31792170/173169436-1af02a61-b6a8-4f53-91c7-999a734d60cc.png">
 <img width="500" alt="gameover" src="https://user-images.githubusercontent.com/31792170/173163046-817ceb01-c7ff-4465-9498-21090919c827.png">
 <img width="500" alt="scores" src="https://user-images.githubusercontent.com/31792170/173162995-3186db38-a1ac-4fae-8221-6f435e7d546e.png">
-
+<img width="500" alt="win" src="https://user-images.githubusercontent.com/31792170/173169340-2e513548-d169-4510-8b36-ea39caa113ce.png">
 
 ## ⚙️ Tech Stack
 * Java Swing
