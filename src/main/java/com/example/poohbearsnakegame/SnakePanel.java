@@ -17,7 +17,7 @@ public class SnakePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = (UNIT_SIZE*35);
     static final int SCREEN_HEIGHT = (UNIT_SIZE*25);;
     static final int DELAY = 100; // milliseconds between each frame rendering (ie what the Timer counts down between creating a new Frame object)
-    static final int WINNING_SCORE = 64;
+    static final int WINNING_SCORE = 33;
     static final int BODY_PARTS_PER_APPLE = 10;
     static final int STARTING_BODY_PARTS = 10; // length of the snake (head + body), start as 3
 
