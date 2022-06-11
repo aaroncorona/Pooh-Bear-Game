@@ -50,8 +50,8 @@ $ java Main
 ```
 
 ## 🚧 Next Release - Version 2.0 Features
-* Log more detailed fan information (e.g. signup with email address)
-* More content like videos and a page for Truffle's little sister
+* More win conditions
+* Store all high scores in the Cloud so you can compete against others
 * Open to suggestions!
 
 
