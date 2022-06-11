@@ -12,7 +12,7 @@ This is a snake style game with added features and a Winnie the Pooh theme.
 * [Features](#%EF%B8%8F-game-features)
 * [Tech Stack](#%EF%B8%8F-tech-stack)
 * [File Descriptions](#%EF%B8%8F-file-descriptions)
-* [Usage](#-usage)
+* [Installation](#-installation)
 * [Next Release](#-next-release---version-20-features)
 
 
@@ -39,11 +39,15 @@ This is a snake style game with added features and a Winnie the Pooh theme.
 * **snake_high_scores.csv** - The CSV where high scores are stored. The SnakePanel logic reads from here
 
 
-## 🚀 Usage
-1. Clone this repo locally and run `npm install` to install all the dependencies.
-2. Run `npm start` to launch the application. It should be running on localhost:4200
-3. Run `ng generate component component-name` to generate a new component if desired. 
-4. To get more help on the Angular CLI use `ng help`.
+## 🚀 Installation
+1. Clone this repo locally 
+2. Remove rows from CSV file to track your own scores (optional)
+3. Navigate to the directory where the source Java files are stored
+4. Run the Main file:
+```
+$ javac Main.java
+$ java Main
+```
 
 ## 🚧 Next Release - Version 2.0 Features
 * Log more detailed fan information (e.g. signup with email address)
