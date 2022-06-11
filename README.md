@@ -16,7 +16,7 @@ This is a snake style game with added features and a Winnie the Pooh theme.
 
 
 ## 🕹️ Game Features
-1. **Snake**: Traditional snake gameplay movements are built in.
+1. **Snake**: Traditional snake gameplay
 2. **Nitro**: Double click in 1 direction to get a nitro boost, which speeds up the dull parts of the game
 3. **Win the Game**: Unlike traditional snake, you can win this game in 2 ways. You can either eat 64 honeys, or eat a honey while filling up all edges with Pooh's tail.
 4. **High scores**: Save and display high scores for "Honey Eaten" to see where you rank.
