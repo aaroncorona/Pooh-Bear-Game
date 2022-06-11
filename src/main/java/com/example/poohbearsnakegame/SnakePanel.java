@@ -16,30 +16,30 @@ public class SnakePanel extends JPanel implements ActionListener {
     static final int UNIT_SIZE = 30;
     static final int SCREEN_WIDTH = (UNIT_SIZE*35);
     static final int SCREEN_HEIGHT = (UNIT_SIZE*25);;
-    static final int DELAY = 100; // milliseconds between each frame rendering (ie what the Timer counts down between creating a new Frame object)
+    static final int DELAY = 100;
     static final int WINNING_SCORE = 33;
-    static final int BODY_PARTS_PER_APPLE = 10;
-    static final int STARTING_BODY_PARTS = 10; // length of the snake (head + body), start as 3
+    static final int BODY_PARTS_PER_HONEY = 10;
+    static final int STARTING_BODY_PARTS = 10;
 
-    // Flags to trigger events
-    static boolean nitro = false; // flag for if the snake is moving on nitro
-    static boolean running = false; // flag for if the snake is moving
-    static boolean initial_pause = true; // flag for if the snake is moving
-    static boolean pause = false;
-    static boolean stopHs = false; // To prevent the timer from continually printing the final score
-    static boolean win = false;
+    // Helper flags to trigger events
+    static boolean running = false; // is the snake is moving
+    static boolean nitro = false; // is the snake is moving in nitro mode
+    static boolean initial_pause = true; // make the game launch in a paused state
+    static boolean pause = false; // subsequent pauses by the user
+    static boolean stopHs = false; // this prevents the high scores from being continually printed
+    static boolean win = false; // triggers the win message
 
-    // Static tracking variables
+    // Continually updated tracking variables
     static long startTime;
     static Color[] randomColorArray;
     static long[][] highScoreArray;
     static int finalScore = 0;
-    static int snake_x_coordinate[] = new int[WINNING_SCORE * (STARTING_BODY_PARTS + 5)]; //2000 is an arbitrary max size of the snake in width (x coordinate length)
-    static int snake_y_coordinate[] = new int[WINNING_SCORE * (STARTING_BODY_PARTS + 5)]; //2000 is an arbitrary max size of the snake in height (y coordinate length)
+    static int snake_x_coordinate[] = new int[WINNING_SCORE * (STARTING_BODY_PARTS + 5)];
+    static int snake_y_coordinate[] = new int[WINNING_SCORE * (STARTING_BODY_PARTS + 5)];
     static int totalBodyParts = STARTING_BODY_PARTS;
-    static int applesEatenScore = 0; // start at 0, then increment everytime the snake head is on the same coordinate as the apple
-    static int apple_x_coordinate;
-    static int apple_y_coordinate;
+    static int honeysEatenScore = 0; // start at 0, then increment everytime the snake head is on the same coordinate as the honey
+    static int honey_x_coordinate;
+    static int honey_y_coordinate;
     static int elapsedMins; // Make public
     static int elapsedSecondsRemainder; // Make public
     static char direction = 'R'; //the direction the snake head moves every delay
@@ -164,7 +164,7 @@ public class SnakePanel extends JPanel implements ActionListener {
 
     public static void startGame() {
         resetSnake();
-        generateNewAppleCoordinates(); // Create an apple when the game begins
+        generateNewHoneyCoordinates(); // Create a honey when the game begins
         pauseMenu.setVisible(false); // Close menu in case it's open
         gameOverMenu.setVisible(false); // Close menu in case it's open
         winMenu.setVisible(false); // Close menu in case it's open
@@ -191,9 +191,9 @@ public class SnakePanel extends JPanel implements ActionListener {
         ImageIcon poohBackgroundIcon = new ImageIcon(new ImageIcon("/Users/aaroncorona/eclipse-workspace/Pooh-Bear-Snake-Game/src/assets/images/PoohBackground.png").getImage().getScaledInstance(450, 300, Image.SCALE_DEFAULT));
         poohBackgroundIcon.paintIcon(this, g, 310, 220);
 
-        // Make the apple a honey pot
+        // Make the honey a honey pot
         ImageIcon honeyIcon = new ImageIcon(new ImageIcon("/Users/aaroncorona/eclipse-workspace/Pooh-Bear-Snake-Game/src/assets/images/Honey.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_DEFAULT));
-        honeyIcon.paintIcon(this, g, apple_x_coordinate, apple_y_coordinate);
+        honeyIcon.paintIcon(this, g, honey_x_coordinate, honey_y_coordinate);
         drawEverything(g); // Put this after so they go on top of the images
 
         // Make the snake head a picture of pooh bear (head goes over the snake)
@@ -210,13 +210,13 @@ public class SnakePanel extends JPanel implements ActionListener {
         // Draw the Snake initial body (yellow)
         for(int i=1; i<=STARTING_BODY_PARTS; i++) { // for the next loops for the initial body, make the rectangles yellow
             g.setColor(Color.yellow); // color the starting body yellow
-            g.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the apple size consistent with the snake
+            g.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the honey size consistent with the snake
         }
 
         // Draw the snake tail (rest of the body). Each new block of 10 gets a random color
         for(int i=STARTING_BODY_PARTS+1; i <= totalBodyParts; i++) { //loop for every 1 added?
             g.setColor(randomColorArray[i]);
-            g.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the apple size consistent with the snake
+            g.fillRect(snake_x_coordinate[i], snake_y_coordinate[i], UNIT_SIZE, UNIT_SIZE); // keep the honey size consistent with the snake
         }
 
         // Display Initial pause message
@@ -236,14 +236,14 @@ public class SnakePanel extends JPanel implements ActionListener {
         }
     }
 
-    public static void generateNewAppleCoordinates(){ //populates new coordinates (int variable values) for an apple, which is then created with draw (graphics object)
-        apple_x_coordinate = new Random().nextInt((int) (SCREEN_WIDTH/UNIT_SIZE)) * UNIT_SIZE; //get random coordinate within the boundary of the unit fully fitting (use division), while also being an exact coordinate (i.e. divisable by the unit size, so use multiplication)
-        apple_y_coordinate = new Random().nextInt((int) (SCREEN_HEIGHT/UNIT_SIZE)) * UNIT_SIZE; //get random coordinate within the boundary of the unit fully fitting (use division), while also being an exact coordinate (i.e. divisable by the unit size, so use multiplication)
+    public static void generateNewHoneyCoordinates(){ //populates new coordinates (int variable values) for a honey, which is then created with draw (graphics object)
+        honey_x_coordinate = new Random().nextInt((int) (SCREEN_WIDTH/UNIT_SIZE)) * UNIT_SIZE; //get random coordinate within the boundary of the unit fully fitting (use division), while also being an exact coordinate (i.e. divisable by the unit size, so use multiplication)
+        honey_y_coordinate = new Random().nextInt((int) (SCREEN_HEIGHT/UNIT_SIZE)) * UNIT_SIZE; //get random coordinate within the boundary of the unit fully fitting (use division), while also being an exact coordinate (i.e. divisable by the unit size, so use multiplication)
 
-        // Generate a new apple if the apple spawns on one of the walls
-        if(apple_x_coordinate == 0 || apple_y_coordinate == 0
-                || apple_x_coordinate == SCREEN_WIDTH || apple_y_coordinate == SCREEN_HEIGHT) {
-            generateNewAppleCoordinates();
+        // Generate a new honey if the honey spawns on one of the walls (for better user experience)
+        if(honey_x_coordinate == 0 || honey_y_coordinate == 0
+                || honey_x_coordinate == SCREEN_WIDTH || honey_y_coordinate == SCREEN_HEIGHT) {
+            generateNewHoneyCoordinates();
         }
     }
 
@@ -262,7 +262,7 @@ public class SnakePanel extends JPanel implements ActionListener {
         running = false;
         // Create Pause Menu
         // JPopupMenu pauseMenu = new JPopupMenu();
-        pauseMenu.setLocation(625, 400);
+        pauseMenu.setLocation(0, 0);
         pauseMenu.setPreferredSize(new Dimension(450, 30));
         pauseMenu.setBackground(Color.green.darker());
         pauseMenu.setBorder(BorderFactory.createLineBorder(Color.white));
@@ -294,7 +294,7 @@ public class SnakePanel extends JPanel implements ActionListener {
         direction = 'R'; // Always move right to avoid a collision
         oldDirection = 'R';
         totalBodyParts = STARTING_BODY_PARTS;
-        applesEatenScore = 0;
+        honeysEatenScore = 0;
     }
 
     public static void moveSnake() { // Continually update the snake coordinates
@@ -325,14 +325,14 @@ public class SnakePanel extends JPanel implements ActionListener {
         }
     }
 
-    public static void checkAppleEaten() { // If the snake head or body is at the same coordinates of the apple, increment the snake body size by 10, increment the score, and generate new apple coordinates
+    public static void checkHoneyEaten() { // If the snake head or body is at the same coordinates of the honey, increment the snake body size by 10, increment the score, and generate new honey coordinates
         for(int i=0; i <= totalBodyParts; i++) {
-            if(snake_x_coordinate[i] == apple_x_coordinate
-                    && snake_y_coordinate[i] == apple_y_coordinate) {
-                applesEatenScore++;
-                totalBodyParts = totalBodyParts + BODY_PARTS_PER_APPLE;
+            if(snake_x_coordinate[i] == honey_x_coordinate
+                    && snake_y_coordinate[i] == honey_y_coordinate) {
+                honeysEatenScore++;
+                totalBodyParts = totalBodyParts + BODY_PARTS_PER_HONEY;
                 checkWin();
-                generateNewAppleCoordinates();
+                generateNewHoneyCoordinates();
             }
         }
     }
@@ -366,12 +366,12 @@ public class SnakePanel extends JPanel implements ActionListener {
 
     public static void checkWin() {
         // Win by reaching the winning score
-        if(applesEatenScore == WINNING_SCORE) {
-            finalScore = applesEatenScore; // Update final score
+        if(honeysEatenScore == WINNING_SCORE) {
+            finalScore = honeysEatenScore; // Update final score
             running = false; // Stop the game
             win = true; // Trigger win menu
         }
-        // Alternate win by filling the edges
+        // Alternate win by filling the edges (STILL A WIP)
         // (top border) check if x edges are filled by the snake
         HashSet snakeXCoordinatesNoDupsTopBorder = new HashSet(); // Deduped array // HashSet is a collection of items where every item is unique // The capacity of an Array is fixed. Whereas ArrayList can increase and decrease size dynamically
         for(int i = 0; i < snake_x_coordinate.length; i++) { // start at 1 to avoid matching with 0
@@ -408,11 +408,11 @@ public class SnakePanel extends JPanel implements ActionListener {
                 && snakeXCoordinatesNoDupsBottomBorder.size() == xAxisUnitLength
                 && snakeYCoordinatesNoDupsLeftBorder.size() == yAxisUnitLength
                 && snakeYCoordinatesNoDupsRightBorder.size() == yAxisUnitLength
-                && applesEatenScore >= 10
+                && honeysEatenScore >= 10
         ) {
-            System.out.println("You filled all the sides and ate an apple! You win!");
-            applesEatenScore = WINNING_SCORE;
-            finalScore = applesEatenScore; // Update final score
+            System.out.println("You filled all the sides and ate a honey! You win!");
+            honeysEatenScore = WINNING_SCORE;
+            finalScore = honeysEatenScore; // Update final score
             running = false; // Stop the game
             win = true; // Trigger win message
         }
@@ -427,7 +427,7 @@ public class SnakePanel extends JPanel implements ActionListener {
     public static void displayScore(Graphics g) { // Display the current score
         g.setColor(Color.blue.brighter());
         g.setFont(new Font("Serif", Font.PLAIN, 50));
-        g.drawString("Honeys Eaten: " + applesEatenScore,30,80); // coordinates start in the top left
+        g.drawString("Honeys Eaten: " + honeysEatenScore,30,80); // coordinates start in the top left
     }
 
     public static void displayStopWatch(Graphics g) { // Display the current score
@@ -446,7 +446,7 @@ public class SnakePanel extends JPanel implements ActionListener {
         // Reset/create array
         randomColorArray = new Color[1000]; // Shell for an array that can hold enough colors for every snake tail addition
         for(int i=STARTING_BODY_PARTS+1; i <= 999; i++) { //start at the value of the initial tail (11th position in the array after the head and inital 10 body)
-            Random rando = new Random((int) Math.floor(i/(STARTING_BODY_PARTS +0.01))); // create a random object using an int seed (i/10) that changes every 10 loops (w rouding) so that the Random object only updates to a new seed benchmark every tail addition / apple eaten (0.01 is for rounding so the random number seed changes at the 11th variable like 21, 31, etc)
+            Random rando = new Random((int) Math.floor(i/(STARTING_BODY_PARTS +0.01))); // create a random object using an int seed (i/10) that changes every 10 loops (w rouding) so that the Random object only updates to a new seed benchmark every tail addition / honey eaten (0.01 is for rounding so the random number seed changes at the 11th variable like 21, 31, etc)
             randomColorArray[i] = new Color(rando.nextInt(255), rando.nextInt(255), rando.nextInt(255)); // every loop generates a color object into the array by taking the next random int in the random sequence. The random sequence of numbers is the same (e.g. 10, 20, 30), but updates every 10 loops, thus creating a different color every 10
         }
     }
@@ -495,20 +495,20 @@ public class SnakePanel extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) { //Listener object to run methods (runs automatically). This reacts to timer and keeps iterating and running the inner functions, otherwise the snake move would just run once
+    public void actionPerformed(ActionEvent e) {
         if(running) {
             moveSnake(); // constantly update the snake coordinates, which the draw function then responds to
-            checkAppleEaten();
+            checkHoneyEaten();
             checkCollisions();
             checkStopWatch();
-            repaint(); // function that continually updates the graphics according to the new variables (ie for each timer object that reruns these functions, repaint must also be called)
+            repaint();
         }
 
-        // When the game ends (loss or win), log the final score if the game ends with a minimum score achieved, then print final score info
+        // When the game ends (loss or win), log the final score if the game ends with a minimum score achieved
         if(running == false && pause == false && initial_pause == false && stopHs == false) {
 
             // Update the final score variable
-            finalScore = applesEatenScore;
+            finalScore = honeysEatenScore;
 
             // Log final score in the CSV file if it's past a certain minimum
             if(finalScore >= 20) {
@@ -540,7 +540,7 @@ public class SnakePanel extends JPanel implements ActionListener {
             System.out.println("3rd place: " + score3 + " on " + ts3);
 
             // End this process
-            stopHs = true; // Set to true, which is a workaround to make sure this only happens oncee
+            stopHs = true;
 
             // Lose game Menu
             if(running == false && pause == false && initial_pause == false && finalScore < WINNING_SCORE) {
@@ -600,7 +600,7 @@ public class SnakePanel extends JPanel implements ActionListener {
             if(win == true) {
                 // Create Win Game Menu
                 JPopupMenu winMenu = new JPopupMenu();
-                winMenu.setLocation(600,300);
+                winMenu.setLocation(700,300);
                 winMenu.setBackground(Color.pink);
                 winMenu.setBorder(BorderFactory.createLineBorder(Color.white));
                 winMenu.setFocusable(false); // Prevent the menu from taking focus from the panel
@@ -643,10 +643,10 @@ public class SnakePanel extends JPanel implements ActionListener {
     public static class RightAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(oldDirection != 'L') { // Make sure the snake can't do a 180 if a player presses the opposit direction, which would end the game
-                direction = 'R';	// oldDirection makes sure the previous movement log actually happens (because that variable is updated by the movement method)
+            if(oldDirection != 'L') { // Make sure the snake can't do a 180, which would end the game
+                direction = 'R';	// oldDirection makes sure the previous movement log actually occurred
             }
-            if(oldDirection == 'R' && direction == 'R') { // Nitro boost from clicking the same direction twice
+            if(oldDirection == 'R' && direction == 'R') { // Activate Nitro boost from clicking the same direction twice
                 nitroOn();
             }
         }
@@ -693,7 +693,7 @@ public class SnakePanel extends JPanel implements ActionListener {
     public static class EnterAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Enter key to restart game (only activate if game is not running, so paused or over)
+            // Enter key to restart game (if stopped)
             if (running == false) {
                 startGame(); // Restart
             }
@@ -702,7 +702,7 @@ public class SnakePanel extends JPanel implements ActionListener {
     public static class DeleteAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Delete key to quit game (if already stopped)
+            // Delete key to quit game (if stopped)
             if (running == false){
                 quitGame();
             }

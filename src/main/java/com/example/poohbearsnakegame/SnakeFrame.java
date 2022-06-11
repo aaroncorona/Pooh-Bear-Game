@@ -4,18 +4,18 @@ import javax.swing.*;
 
 public class SnakeFrame extends JFrame {
 
-    // Panel
-    SnakePanel panel = new SnakePanel(); // Add Panel object to the Frame
+    // Create Panel within Frame
+    SnakePanel panel = new SnakePanel();
 
-    // Constructor, creates a Frame object
+    // Constructor
     SnakeFrame() {
 
         // Set frame details
-        this.setTitle("SNAKE");
+        this.setTitle("POOH BEAR");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.add(panel);
-        this.pack(); // Automatically sizes the Frame
+        this.pack(); // to automatically size the Frame to the Panel settings
         this.setLayout(null);
         this.setLocationRelativeTo(null);
 
