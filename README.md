@@ -11,6 +11,7 @@ This is a snake style game with added features and a Winnie the Pooh theme.
 ## 📖 Table of Contents
 * [Features](#%EF%B8%8F-game-features)
 * [Tech Stack](#%EF%B8%8F-tech-stack)
+* [File Descriptions](#%EF%B8%8F-file-descriptions)
 * [Usage](#-usage)
 * [Next Release](#-next-release---version-20-features)
 
@@ -26,11 +27,17 @@ This is a snake style game with added features and a Winnie the Pooh theme.
 <img width="500" alt="scores" src="https://user-images.githubusercontent.com/31792170/173162995-3186db38-a1ac-4fae-8221-6f435e7d546e.png">
 
 
-
-
 ## ⚙️ Tech Stack
 * Java Swing
 * IntelliJ
+
+
+## 🗂️ File Descriptions
+* **SnakePanel.java** - Where the Panel and all game logic lives
+* **SnakeFrame.java** - The Panel is instantiated within the contstructor for a JFrame
+* **Main.java** - The JFrame is instantiated
+* **snake_high_scores.csv** - The CSV where high scores are stored. The SnakePanel logic reads from here
+
 
 ## 🚀 Usage
 1. Clone this repo locally and run `npm install` to install all the dependencies.
