@@ -6,7 +6,7 @@
 
 
 ## 🐻 Overview
-This is a snake style game with added features and a Winnie the Pooh theme.
+This is a 2D game written in Java. It is inspired by Snake with added features and a Winnie-the-Pooh theme.
 
 ## 📖 Table of Contents
 * [Features](#%EF%B8%8F-game-features)
