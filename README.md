@@ -54,4 +54,3 @@ $ java Main
 * Store all high scores in the Cloud so you can compete against others
 * Open to suggestions!
 
-
