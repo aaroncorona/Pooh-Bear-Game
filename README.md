@@ -1,6 +1,6 @@
 
 # Pooh Bear Game
-<img width="500" alt="intro" src="https://user-images.githubusercontent.com/31792170/173160983-bcf42e7c-738e-4cb4-85af-0c0ea89d9377.png">
+<img width="550" alt="intro" src="https://user-images.githubusercontent.com/31792170/173160983-bcf42e7c-738e-4cb4-85af-0c0ea89d9377.png">
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/aaroncorona/Pooh-Bear-Game">
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/aaroncorona/Pooh-Bear-Game">
 
