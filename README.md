@@ -48,9 +48,3 @@ This is a 2D game written in Java. It is inspired by Snake with added features a
 $ javac Main.java
 $ java Main
 ```
-
-## 🚧 Next Release - Version 2.0 Features
-* More win conditions
-* Store all high scores in the Cloud so you can compete against others
-* Open to suggestions!
-
